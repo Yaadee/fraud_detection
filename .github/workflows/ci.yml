@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install dvc
+
+    - name: Pull data from DVC
+      run: dvc pull
+
+    - name: Run Preprocessing Script
+      run: python src/data_preprocessing.py
+
+    - name: Commit processed data
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        dvc add data/processed/processed_Fraud_Data.csv
+        dvc add data/processed/processed_IpAddress_to_Country.csv
+        dvc add data/processed/processed_creditcard.csv
+        git add data/processed/*.dvc
+        git commit -m 'Update processed data'
+        git push origin main

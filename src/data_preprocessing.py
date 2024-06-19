@@ -1,147 +1,3 @@
-# import os
-# import pandas as pd
-
-# # Directory Paths
-# data_dir = "./data/raw/"
-# output_dir = "./data/processed/"
-
-# # Ensure output directory exists
-# os.makedirs(output_dir, exist_ok=True)
-
-# # Files
-# datasets = {
-#     "fraud_data": "Fraud_Data.csv",
-#     "ip_data": "IpAddress_to_Country.csv",
-#     "creditcard_data": "creditcard.csv"
-# }
-
-# # Function to display missing values
-# def display_missing_values(df, dataset_name):
-#     missing_values = df.isnull().sum()
-#     print(f"Missing values in {dataset_name}:")
-#     print(missing_values[missing_values > 0])
-
-# # Function to handle missing values
-# def handle_missing_values(df):
-#     for column in df.columns:
-#         if df[column].dtype == "object":  # For non-numeric columns
-#             df[column].fillna(df[column].mode()[0], inplace=True)  # Fill with mode
-#         else:
-#             df[column].fillna(df[column].median(), inplace=True)  # Fill with median
-#     return df
-
-# # Function to preprocess data
-# def preprocess_data(file_path, dataset_name):
-#     df = pd.read_csv(file_path)
-#     display_missing_values(df, dataset_name)
-#     df = handle_missing_values(df)
-#     return df
-
-# # Process each dataset
-# for dataset_name, filename in datasets.items():
-#     file_path = os.path.join(data_dir, filename)
-#     if os.path.exists(file_path):
-#         processed_df = preprocess_data(file_path, dataset_name)
-#         processed_df.to_csv(os.path.join(output_dir, f"processed_{filename}"), index=False)
-#     else:
-#         print(f"File {filename} not found in {data_dir}")
-
-
-# import pandas as pd
-# import numpy as np
-# from sklearn.preprocessing import StandardScaler, OneHotEncoder
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-
-# class DataProcessor:
-#     def __init__(self):
-#         self.fraud_data = None
-#         self.ip_data = None
-#         self.merged_data = None
-        
-#     def load_data(self):
-#         self.fraud_data = pd.read_csv('data/raw/Fraud_Data.csv')
-#         self.ip_data = pd.read_csv('data/raw/IpAddress_to_Country.csv')
-        
-#     def handle_missing_values(self):
-#         # Identify numeric columns
-#         numeric_cols = self.fraud_data.select_dtypes(include=[np.number]).columns.tolist()
-        
-#         # Fill missing values in numeric columns with median
-#         self.fraud_data[numeric_cols] = self.fraud_data[numeric_cols].fillna(self.fraud_data[numeric_cols].median())        
-#     def merge_datasets(self):
-#         # Convert IP addresses to integer format and merge datasets
-#         self.fraud_data['ip_address'] = self.fraud_data['ip_address'].astype(int)
-        
-#         # Convert IP address columns in ip_data if they are not already converted
-#         if not pd.api.types.is_integer_dtype(self.ip_data['lower_bound_ip_address']):
-#             self.ip_data['lower_bound_ip_address'] = self.ip_data['lower_bound_ip_address'].apply(lambda x: int(''.join(str(x).split('.'))) if pd.notna(x) else np.nan)
-        
-#         if not pd.api.types.is_integer_dtype(self.ip_data['upper_bound_ip_address']):
-#             self.ip_data['upper_bound_ip_address'] = self.ip_data['upper_bound_ip_address'].apply(lambda x: int(''.join(str(x).split('.'))) if pd.notna(x) else np.nan)
-        
-#         self.merged_data = pd.merge(self.fraud_data, self.ip_data, how='left', left_on='ip_address', right_on='lower_bound_ip_address')
-        
-#     def feature_engineering(self):
-#         # Example: Add time-based features
-#         self.merged_data['time_diff'] = (pd.to_datetime(self.merged_data['purchase_time']) - pd.to_datetime(self.merged_data['signup_time'])).dt.total_seconds()
-#         self.merged_data['hour_of_day'] = pd.to_datetime(self.merged_data['purchase_time']).dt.hour
-#         self.merged_data['day_of_week'] = pd.to_datetime(self.merged_data['purchase_time']).dt.dayofweek
-        
-#     def normalize_and_scale(self):
-#         # Example: Normalize and scale features
-#         scaler = StandardScaler()
-#         numerical_features = ['purchase_value', 'age', 'time_diff']
-#         self.merged_data[numerical_features] = scaler.fit_transform(self.merged_data[numerical_features])
-        
-#     def encode_categorical_features(self):
-#         # Example: Encode categorical features
-#         categorical_features = ['source', 'browser', 'sex']
-#         encoder = OneHotEncoder()
-#         encoded_features = pd.DataFrame(encoder.fit_transform(self.merged_data[categorical_features]).toarray(), columns=encoder.get_feature_names_out(categorical_features))
-#         self.merged_data = pd.concat([self.merged_data, encoded_features], axis=1)
-#         self.merged_data = self.merged_data.drop(categorical_features, axis=1)
-        
-#     def save_processed_data(self, filename):
-#         self.merged_data.to_csv(filename, index=False)
-        
-#     def visualize_data(self):
-#         # Univariate analysis
-#         plt.figure(figsize=(12, 6))
-#         sns.histplot(self.merged_data['purchase_value'].dropna(), bins=30, kde=True)
-#         plt.title('Distribution of Purchase Value')
-#         plt.xlabel('Purchase Value')
-#         plt.ylabel('Frequency')
-#         plt.show()
-
-#         plt.figure(figsize=(12, 6))
-#         sns.countplot(x='class', data=self.merged_data)
-#         plt.title('Class Distribution')
-#         plt.show()
-
-#         # Bivariate analysis
-#         plt.figure(figsize=(12, 6))
-#         sns.boxplot(x='class', y='purchase_value', data=self.merged_data)
-#         plt.title('Purchase Value by Class')
-#         plt.show()
-
-#         plt.figure(figsize=(12, 6))
-#         sns.scatterplot(x='purchase_value', y='age', hue='class', data=self.merged_data)
-#         plt.title('Purchase Value vs. Age')
-#         plt.show()
-
-# # Example usage:
-# if __name__ == "__main__":
-#     processor = DataProcessor()
-#     processor.load_data()
-#     processor.handle_missing_values()
-#     processor.merge_datasets()
-#     processor.feature_engineering()
-#     processor.normalize_and_scale()
-#     processor.encode_categorical_features()
-#     processor.save_processed_data('data/processed/processed_data.csv')
-#     processor.visualize_data()
-
 
 import pandas as pd
 import numpy as np
@@ -236,3 +92,209 @@ ip_data.to_csv('data/processed/processed_IpAddress_to_Country.csv', index=False)
 # Display processed data summary
 print("Processed Fraud Data Summary:")
 print(processed_fraud_data.info())
+
+
+
+
+
+
+# import pandas as pd
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.impute import SimpleImputer
+
+# def load_data():
+#     """
+#     Loads the Fraud_Data.csv and IpAddress_to_Country.csv files.
+    
+#     Returns:
+#         fraud_data (pandas.DataFrame): Fraud data.
+#         ip_data (pandas.DataFrame): IP address to country mapping data.
+#     """
+#     fraud_data = pd.read_csv('data/raw/Fraud_Data.csv')
+#     ip_data = pd.read_csv('data/raw/IpAddress_to_Country.csv')
+#     return fraud_data, ip_data
+
+# def handle_missing_values(data):
+#     """
+#     Imputes missing values in numerical columns with the median.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+        
+#     Returns:
+#         data (pandas.DataFrame): The data with missing values imputed.
+#     """
+#     imputer = SimpleImputer(strategy='median')
+#     num_cols = data.select_dtypes(include=[np.number]).columns
+#     data[num_cols] = imputer.fit_transform(data[num_cols])
+#     return data
+
+# def clean_data(data):
+#     """
+#     Cleans the data by removing duplicates and correcting data types.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+        
+#     Returns:
+#         data (pandas.DataFrame): The cleaned data.
+#     """
+#     # Remove duplicates
+#     data = data.drop_duplicates()
+    
+#     # Correct data types
+#     data['purchase_value'] = pd.to_numeric(data['purchase_value'], errors='coerce')
+#     data['signup_time'] = pd.to_datetime(data['signup_time'], errors='coerce')
+#     data['purchase_time'] = pd.to_datetime(data['purchase_time'], errors='coerce')
+    
+    
+#     return data
+
+# def exploratory_data_analysis(data):
+#     """
+#     Performs exploratory data analysis on the input data, including univariate and bivariate analysis.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+#     """
+#     # Ensure 'purchase_value' is a numeric column
+#     data['purchase_value'] = pd.to_numeric(data['purchase_value'], errors='coerce')
+    
+#     # Drop any rows with NaN values in 'purchase_value' after conversion
+#     data = data.dropna(subset=['purchase_value'])
+    
+#     # Convert to numpy array for seaborn compatibility
+#     purchase_value_array = data['purchase_value'].to_numpy()
+    
+#     # Univariate analysis
+#     plt.figure(figsize=(12, 6))
+#     sns.histplot(purchase_value_array, bins=30, kde=True)
+#     plt.title('Distribution of Purchase Value')
+#     plt.xlabel('Purchase Value')
+#     plt.ylabel('Density')
+#     plt.show()
+    
+#     # Bivariate analysis
+#     plt.figure(figsize=(12, 6))
+#     sns.boxplot(x='class', y='purchase_value', data=data)
+#     plt.title('Boxplot of Purchase Value by Class')
+#     plt.xlabel('Class')
+#     plt.ylabel('Purchase Value')
+#     plt.show()
+
+# def merge_datasets(fraud_data, ip_data):
+#     """
+#     Merges the fraud data and IP address to country mapping data based on the IP address.
+    
+#     Args:
+#         fraud_data (pandas.DataFrame): The fraud data.
+#         ip_data (pandas.DataFrame): The IP address to country mapping data.
+        
+#     Returns:
+#         fraud_data (pandas.DataFrame): The merged data.
+#     """
+#     # Convert IP addresses to integer format
+#     ip_data['lower_bound_ip_address'] = ip_data['lower_bound_ip_address'].astype(np.int64)
+#     ip_data['upper_bound_ip_address'] = ip_data['upper_bound_ip_address'].astype(np.int64)
+#     fraud_data['ipmatch_address'] = fraud_data['ip_address'].astype(np.int64)
+    
+#     # Initialize country column with NaN values
+#     fraud_data['country'] = np.nan
+
+#     # Merge datasets without introducing NaN values
+#     for index, row in fraud_data.iterrows():
+#         match = ip_data[(ip_data['lower_bound_ip_address'] <= row['ip_address']) & (ip_data['upper_bound_ip_address'] >= row['ip_address'])]
+#         if not match.empty:
+#             fraud_data.at[index, 'country'] = str(match['country'].values[0])
+    
+#     return fraud_data
+
+# def feature_engineering(data):
+#     """
+#     Performs feature engineering on the input data, adding time-based features and transaction-related features.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+        
+#     Returns:
+#         data (pandas.DataFrame): The data with added features.
+#     """
+#     # Add time-based features
+#     data['hour_of_day'] = data['purchase_time'].dt.hour
+#     data['day_of_week'] = data['purchase_time'].dt.dayofweek
+    
+#     # Transaction frequency and velocity
+#     data['transaction_count'] = data.groupby('user_id')['user_id'].transform('count')
+#     data['transaction_velocity'] = data.groupby('user_id')['purchase_time'].transform(lambda x: (x.max() - x.min()).days + 1)
+    
+#     return data
+
+# def normalize_and_scale(data):
+#     """
+#     Normalizes and scales the selected features in the input data.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+        
+#     Returns:
+#         data (pandas.DataFrame): The normalized and scaled data.
+#     """
+#     # Normalize and scale features
+#     scaler = StandardScaler()
+#     data[['purchase_value', 'hour_of_day', 'day_of_week']] = scaler.fit_transform(data[['purchase_value', 'hour_of_day', 'day_of_week']])
+#     return data
+
+# def encode_categorical_features(data):
+#     """
+#     Encodes the categorical features in the input data using one-hot encoding.
+    
+#     Args:
+#         data (pandas.DataFrame): The input data.
+        
+#     Returns:
+#         data (pandas.DataFrame): The data with encoded categorical features.
+#     """
+#     # Encode categorical features
+#     data = pd.get_dummies(data, columns=['country'])
+#     return data
+
+# def save_processed_data(data, path):
+#     """
+#     Saves the processed data to a CSV file.
+    
+#     Args:
+#         data (pandas.DataFrame): The processed data.
+#         path (str): The path to save the data.
+#     """
+#     data.to_csv(path, index=False)
+
+# # Load data
+# fraud_data, ip_data = load_data()
+
+
+# # Handle Missing Values
+# fraud_data = handle_missing_values(fraud_data)
+
+# # Data Cleaning
+# fraud_data = clean_data(fraud_data)
+
+# # Exploratory Data Analysis (EDA)
+# exploratory_data_analysis(fraud_data)
+
+# # Merge Datasets for Geolocation Analysis
+# merged_data = merge_datasets(fraud_data, ip_data)
+
+# # Feature Engineering
+# merged_data = feature_engineering(merged_data)
+
+# # Normalization and Scaling
+# merged_data = normalize_and_scale(merged_data)
+
+# # Encode Categorical Features
+# final_data = encode_categorical_features(merged_data)
+
+# # Save the cleaned and processed data
+# save_processed_data(final_data, 'data/processed/merged_data.csv')

@@ -1,0 +1,4 @@
+artifact_location: file:///home/yadasa/Desktop/fraud_detection_project/mlruns/1
+experiment_id: '1'
+lifecycle_stage: active
+name: Fraud Detection Models

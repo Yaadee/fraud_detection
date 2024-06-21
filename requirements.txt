@@ -123,3 +123,10 @@ wcwidth==0.2.13
 Werkzeug==3.0.3
 yarl==1.9.4
 zc.lockfile==3.0.post1
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+mlflow
+tensorflow

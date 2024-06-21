@@ -1,0 +1,15 @@
+artifact_uri: file:///home/yadasa/Desktop/fraud_detection_project/mlruns/1/6119a2adaea0441ca005ab6f7ddb2724/artifacts
+end_time: 1718961702740
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 6119a2adaea0441ca005ab6f7ddb2724
+run_uuid: 6119a2adaea0441ca005ab6f7ddb2724
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718961702700
+status: 4
+tags: []
+user_id: yadasa

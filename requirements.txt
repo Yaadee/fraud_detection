@@ -38,7 +38,7 @@ distro==1.9.0
 docker==7.1.0
 dpath==2.2.0
 dulwich==0.22.1
-dvc==3.51.2
+dvc==3.38.1
 dvc-data==3.15.1
 dvc-http==2.32.0
 dvc-objects==5.1.0

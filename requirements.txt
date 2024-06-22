@@ -94,7 +94,7 @@ MarkupSafe==2.1.5
 matplotlib== 3.7.5
 mdurl==0.1.2
 ml-dtypes==0.2.0
-mlflow==1.27.0
+mlflow==2.14.1
 multidict==6.0.5
 namex==0.0.8
 networkx==3.3

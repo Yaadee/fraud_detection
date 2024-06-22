@@ -41,7 +41,8 @@ dulwich==0.22.1
 dvc-data==3.7.0
 dvc-http==2.32.0
 dvc-objects==3.0.6
-dvc-render==1.0.2
+dvc-render==1.0.1
+
 dvc-studio-client==0.20.0
 dvc-task==0.4.0
 dvc

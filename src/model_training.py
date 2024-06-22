@@ -449,7 +449,6 @@
 
 
 
-
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -523,8 +522,7 @@ def train_and_log_nn_model(model, X_train_nn, y_train_smote, X_test_nn, y_test, 
         accuracy = model.evaluate(X_test_nn, y_test, verbose=0)[1]
         mlflow.log_metric("accuracy", accuracy)
         
-        keras_version = tf.keras.__version__
-        mlflow.keras.log_model(model, model_name, keras_version=keras_version)
+        mlflow.keras.log_model(model, model_name)
 
 # Load datasets
 creditcard_data = pd.read_csv('data/processed/processed_creditcard.csv')
@@ -554,13 +552,15 @@ models = {
 
 mlflow.set_experiment("Fraud Detection Models")
 
+pip_requirements = ['scikit-learn==1.5.0', 'cloudpickle==3.0.0']
+
 # Train and log models for credit card data
 for model_name, model in models.items():
     with mlflow.start_run(run_name=f"{model_name} (creditcard)"):
         print(f"Training {model_name} on creditcard data")
         accuracy = train_and_evaluate_model(model, X_train_cc, y_train_cc, X_test_cc, y_test_cc, model_name)
         mlflow.log_metric("accuracy", accuracy)
-        mlflow.sklearn.log_model(model, model_name)
+        mlflow.sklearn.log_model(model, model_name, pip_requirements=pip_requirements)
 
 # Train and log models for fraud data
 for model_name, model in models.items():
@@ -568,7 +568,7 @@ for model_name, model in models.items():
         print(f"Training {model_name} on fraud data")
         accuracy = train_and_evaluate_model(model, X_train_fd_smote, y_train_fd_smote, X_test_fd, y_test_fd, model_name)
         mlflow.log_metric("accuracy", accuracy)
-        mlflow.sklearn.log_model(model, model_name)
+        mlflow.sklearn.log_model(model, model_name, pip_requirements=pip_requirements)
 
 # Prepare data for neural networks
 X_train_fd_nn = X_train_fd_smote.values.reshape((X_train_fd_smote.shape[0], X_train_fd_smote.shape[1], 1))

@@ -80,7 +80,7 @@ iterative-telemetry==0.0.8
 itsdangerous==2.2.0
 Jinja2==3.1.4
 joblib==1.4.2
-keras==2.14.0
+keras==3.3.3
 kiwisolver==1.4.5
 kombu==5.3.7
 lazy_loader==0.4
@@ -93,7 +93,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib==3.9.0
 mdurl==0.1.2
-ml-dtypes==0.2.0
+ml-dtypes==0.3.2
 mlflow==1.27.0
 multidict==6.0.5
 namex==0.0.8
@@ -158,9 +158,9 @@ SQLAlchemy==2.0.31
 sqlparse==0.5.0
 sqltrie==0.11.0
 tabulate==0.9.0
-tensorboard==2.14.1
+tensorboard==2.16.2
 tensorboard-data-server==0.7.2
-tensorflow==2.14.0
+tensorflow==2.16.1
 tensorflow-estimator==2.14.0
 tensorflow-io-gcs-filesystem==0.37.0
 termcolor==2.4.0
@@ -176,7 +176,7 @@ vine==5.1.0
 voluptuous==0.14.2
 wcwidth==0.2.13
 Werkzeug==3.0.3
-wrapt==1.14.1
+wrapt==1.16.0
 yarl==1.9.4
 zc.lockfile==3.0.post1
 zipp==3.19.2

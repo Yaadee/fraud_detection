@@ -27,7 +27,7 @@ click-repl==0.3.0
 cloudpickle==3.0.0
 colorama==0.4.6
 configobj==5.0.8
-contourpy==1.2.1
+contourpy==1.0.7
 cryptography==42.0.8
 cycler==0.12.1
 databricks-cli==0.18.0

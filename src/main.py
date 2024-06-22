@@ -1,5 +1,5 @@
-from src.data_preprocessing import prepare_creditcard_data, prepare_fraud_data
-from src.model_training import train_and_evaluate_creditcard_models, train_and_evaluate_fraud_detection_models
+from data_preprocessing import prepare_creditcard_data, prepare_fraud_data
+from model_training import train_and_evaluate_creditcard_models, train_and_evaluate_fraud_detection_models
 from src.feature_engineering import merge_ip_to_country, extract_time_features
 
 # Paths to data files

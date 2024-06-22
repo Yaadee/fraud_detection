@@ -38,13 +38,13 @@ distro==1.9.0
 docker==7.1.0
 dpath==2.2.0
 dulwich==0.22.1
-dvc==3.38.1
-dvc-data==3.15.1
+dvc-data==3.7.0
 dvc-http==2.32.0
-dvc-objects==5.1.0
+dvc-objects==3.0.6
 dvc-render==1.0.2
 dvc-studio-client==0.20.0
 dvc-task==0.4.0
+dvc
 entrypoints==0.4
 filelock==3.15.1
 Flask==3.0.3

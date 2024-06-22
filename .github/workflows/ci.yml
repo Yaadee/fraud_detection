@@ -33,12 +33,12 @@ jobs:
     - name: Run Preprocessing Script
       run: python src/data_preprocessing.py
 
-    - name: Commit processed data
-      run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
-        dvc add data/processed/merged_data.csv
-        dvc add data/processed/processed_for_model.csv
-        git add data/processed/*.dvc
-        git commit -m 'Update processed data'
-        git push origin main
+    # - name: Commit processed data
+      # run: |
+      #   git config --global user.name 'GitHub Actions'
+      #   git config --global user.email 'actions@github.com'
+      #   dvc add data/processed/merged_data.csv
+      #   dvc add data/processed/processed_for_model.csv
+      #   git add data/processed/*.dvc
+      #   git commit -m 'Update processed data'
+      #   git push origin main

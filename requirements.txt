@@ -80,7 +80,7 @@ iterative-telemetry==0.0.8
 itsdangerous==2.2.0
 Jinja2==3.1.4
 joblib==1.4.2
-keras==3.3.3
+keras==2.15.0
 kiwisolver==1.4.5
 kombu==5.3.7
 lazy_loader==0.4

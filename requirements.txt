@@ -97,7 +97,7 @@ ml-dtypes==0.2.0
 mlflow==2.14.1
 multidict==6.0.5
 namex==0.0.8
-networkx==3.3
+networkx==3.1
 numba==0.60.0
 numpy==1.26.4
 oauthlib==3.2.2

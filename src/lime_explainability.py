@@ -1,13 +1,7 @@
-import imblearn
-import mlflow
-import tensorflow as tf
-
-print("imblearn version:", imblearn.__version__)
-print("mlflow version:", mlflow.__version__)
-print("tensorflow version:", tf.__version__)
 import pandas as pd
 import numpy as np
-import shap
+import lime
+import lime.lime_tabular
 import mlflow.sklearn
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -43,21 +37,14 @@ X_train_fd_smote, y_train_fd_smote = smote.fit_resample(X_train_fd, y_train_fd)
 logged_model = 'runs:/<run_id>/model'
 model = mlflow.sklearn.load_model(logged_model)
 
-# Explain the model using SHAP
-explainer = shap.Explainer(model, X_train_fd_smote)
-shap_values = explainer(X_test_fd)
+# Explain the model using LIME
+explainer = lime.lime_tabular.LimeTabularExplainer(X_train_fd_smote.values, feature_names=X_train_fd.columns, class_names=['Not Fraud', 'Fraud'], discretize_continuous=True)
 
-# Summary Plot
-shap.summary_plot(shap_values, X_test_fd, show=False)
-plt.savefig('shap_summary_plot.png')
-plt.close()
+i = 0
+exp = explainer.explain_instance(X_test_fd.iloc[i], model.predict_proba, num_features=10)
+exp.save_to_file('lime_explanation.html')
 
-# Force Plot for a single prediction
-shap.force_plot(explainer.expected_value, shap_values[0], X_test_fd.iloc[0, :], matplotlib=True)
-plt.savefig('shap_force_plot.png')
-plt.close()
-
-# Dependence Plot
-shap.dependence_plot('feature_name', shap_values, X_test_fd, show=False)
-plt.savefig('shap_dependence_plot.png')
+# Feature Importance Plot for a specific prediction
+fig = exp.as_pyplot_figure()
+plt.savefig('lime_feature_importance_plot.png')
 plt.close()

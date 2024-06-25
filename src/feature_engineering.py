@@ -28,11 +28,11 @@ def feature_engineering(data):
     return data
 
 if __name__ == "__main__":
-    merged_data_path = '../data/processed/merged_data.csv'
+    merged_data_path = 'data/processed/merged_data.csv'
     merged_data = pd.read_csv(merged_data_path)
     
     feature_data = feature_engineering(merged_data)
-    feature_data.to_csv('../data/processed/processed_for_model.csv', index=False)
+    feature_data.to_csv('data/processed/processed_for_model.csv', index=False)
 
 
 # import pandas as pd

@@ -1,10 +1,3 @@
-import imblearn
-import mlflow
-import tensorflow as tf
-
-print("imblearn version:", imblearn.__version__)
-print("mlflow version:", mlflow.__version__)
-print("tensorflow version:", tf.__version__)
 import pandas as pd
 import numpy as np
 import shap
@@ -14,11 +7,16 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 
 # Load datasets
-creditcard_data = pd.read_csv('data/processed/creditcard.csv')
+creditcard_data = pd.read_csv('data/processed/processed_creditcard.csv')
 fraud_data = pd.read_csv('data/processed/processed_for_model.csv')
 
 # Prepare data
-def prepare_data(data, target_column):
+def prepare_creditcard_data(data, target_column):
+    X = data.drop(columns=[target_column])
+    y = data[target_column]
+    return train_test_split(X, y, test_size=0.3, random_state=42)
+
+def prepare_fraud_data(data, target_column):
     data['signup_time'] = pd.to_datetime(data['signup_time'])
     data['purchase_time'] = pd.to_datetime(data['purchase_time'])
     
@@ -32,8 +30,8 @@ def prepare_data(data, target_column):
     y = data[target_column]
     return train_test_split(X, y, test_size=0.3, random_state=42)
 
-X_train_cc, X_test_cc, y_train_cc, y_test_cc = prepare_data(creditcard_data, 'Class')
-X_train_fd, X_test_fd, y_train_fd, y_test_fd = prepare_data(fraud_data, 'class')
+X_train_cc, X_test_cc, y_train_cc, y_test_cc = prepare_creditcard_data(creditcard_data, 'Class')
+X_train_fd, X_test_fd, y_train_fd, y_test_fd = prepare_fraud_data(fraud_data, 'class')
 
 # Apply SMOTE to balance the training data
 smote = SMOTE(random_state=42)

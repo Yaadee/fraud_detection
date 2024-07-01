@@ -14,7 +14,7 @@ async-timeout==3.0.1
 asyncssh==2.10.0
 atpublic==3.0.0
 attrs==21.2.0
-billiard==3.6.4.0
+billiard
 blinker==1.4
 cachetools==4.2.2
 celery==5.4.0

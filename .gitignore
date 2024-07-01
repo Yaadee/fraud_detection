@@ -3,3 +3,5 @@ venv/
 *__pychache__/
 *.pkl
 dvc/
+*.pkl
+*.txt

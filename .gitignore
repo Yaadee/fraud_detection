@@ -1,3 +1,5 @@
 venv/
 *mlruns/
-*__pychache__
+*__pychache__/
+*.pkl
+dvc/
